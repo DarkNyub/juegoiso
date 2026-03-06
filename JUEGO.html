@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditor ISO 45001: Kitchen Challenge Pro</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --accent: #f1c40f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 { color: var(--primary); margin-bottom: 5px; }
+        
+        #game-container {
+            position: relative;
+            width: 2816px; /* Ajustado al tamaño de la imagen generada */
+            height: 1536px;
+            background-image: url('cocina_iso45001.png'); /* <--- USA LA IMAGEN AQUÍ */
+            background-size: cover;
+            border: 8px solid #34495e;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Puntos de Riesgo INVISIBLES por defecto */
+        .risk-point {
+            position: absolute;
+            width: 45px; /* Ligeramente más grandes para facilitar el clic */
+            height: 45px;
+            cursor: crosshair; /* Cambia el cursor para indicar inspección */
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 30px;
+            background: rgba(255,0,0,0.2);  /**/ DESCOMENTA ESTO PARA VER DÓNDE ESTÁN MIENTRAS PRUEBAS */
+        }
+
+        /* La 'X' que aparece al hacer clic */
+        .marked {
+            background: rgba(231, 76, 60, 0.8);
+            color: white;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        /* Panel de Información */
+        #ui-panel {
+            width: 1000px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #message-box {
+            flex: 1;
+            margin-left: 20px;
+            padding: 15px;
+            border-left: 5px solid var(--accent);
+            background: #fff9e6;
+            min-height: 60px;
+            font-size: 1.1em;
+        }
+
+        .counter { font-size: 1.3rem; font-weight: bold; color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <h1>🔍 Inspector de Seguridad ISO 45001 (Modo Experto)</h1>
+    <p>La cocina parece normal. Haz clic donde creas que existe un riesgo laboral oculto según la norma.</p>
+
+    <div id="game-container">
+        
+        <div class="risk-point" style="top: 1147px;right: 349px;" onclick="checkRisk(this, 'Cuchillo de chef mal colocado. Peligro de corte por caída.\nMEDIDA: Control administrativo (Orden) y uso de porta-cuchillos (Ingeniería).')"></div>
+        
+        <div class="risk-point" style="top: 519px;left: 1460px;" onclick="checkRisk(this, 'Salida de emergencia parcialmente bloqueada por cajas. Peligro en evacuación (Cláusula 8.2).\nMEDIDA: Eliminar obstáculos inmediatamente.')"></div>
+        
+        <div class="risk-point" style="top: 760px;left: 620px;" onclick="checkRisk(this, 'Mango de olla hacia el pasillo. Peligro de volcado y quemadura.\nMEDIDA: Buenas prácticas de trabajo (Administrativo).')"></div>
+        
+        <div class="risk-point" style="top: 1280px;left: 1750px;" onclick="checkRisk(this, 'Charco de aceite/agua en zona de tránsito. Peligro de resbalón.\nMEDIDA: Limpieza inmediata, señalización y calzado antideslizante (EPP).')"></div>
+        
+        <div class="risk-point" style="top: 579px;right: 1499px;" onclick="checkRisk(this, 'Cable eléctrico dañado y expuesto. Peligro de electrocución.\nMEDIDA: Eliminación del riesgo (Sustitución inmediata del equipo o cable).')"></div>
+
+        <div class="risk-point" style="top: 595px;left: 1820px;width: 80px;height: 100px;" onclick="checkRisk(this, 'Postura forzada (encorvada) constante al picar. Riesgo ergonómico.\nMEDIDA: Rediseño del puesto de trabajo/mesas ajustables (Ingeniería).')"></div>
+
+        <div class="risk-point" style="top: 450px;right: 200px;" onclick="checkRisk(this, 'Sartenes y ollas apiladas inestablemente en altura. Peligro de caída de objetos.\nMEDIDA: Control administrativo (Orden) y rediseño de estanterías.')"></div>
+    </div>
+
+    <div id="ui-panel">
+        <div class="counter">Riesgos Detectados: <span id="count">0</span> / 7</div>
+        <div id="message-box">Inspecciona visualmente la cocina y haz clic en los peligros...</div>
+    </div>
+
+    <script>
+        let found = 0;
+        const total = 7; // Ajustado a los puntos clave reposicionados
+
+        function checkRisk(element, message) {
+            if (!element.classList.contains('marked')) {
+                element.classList.add('marked');
+                element.innerHTML = '❌'; // Aparece la X roja
+                found++;
+                document.getElementById('count').innerText = found;
+                
+                // Formatear mensaje ISO 45001
+                document.getElementById('message-box').innerHTML = `<strong>✅ HALLAZGO CONFIRMADO:</strong><br>${message.replace('\n', '<br>')}`;
+
+                if (found === total) {
+                    alert("¡Auditoría Completa! Has identificado todos los riesgos críticos ocultos visualmente.");
+                }
+            }
+        }
+    </script>
+</body>
+</html>
